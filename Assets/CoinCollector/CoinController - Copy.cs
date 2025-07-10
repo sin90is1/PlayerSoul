@@ -6,7 +6,7 @@ using System;
 
 public class CoinController : MonoBehaviour
 {
-    public event Action<GameObject> OnCoinCollected; // Event to notify when the enemy dies
+    public event Action<GameObject> OnCoinCollected;
 
     private CircleCollider2D[] _colliders;
 
@@ -17,10 +17,7 @@ public class CoinController : MonoBehaviour
 
     public void DestroyCoin()
     {
-        // Notify subscribers that this enemy has died
         OnCoinCollected?.Invoke(gameObject);
-
-        // Destroy the enemy
         Destroy(gameObject);
     }
 }

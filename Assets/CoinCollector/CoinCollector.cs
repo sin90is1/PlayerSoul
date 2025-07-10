@@ -13,7 +13,7 @@ public class CoinCollector : MonoBehaviour
             var enemy = other.gameObject.GetComponent<CoinController>();
             enemy.DestroyCoin();
 
-            // Notify the KillCounterUI to increment the kill count
+            
             if (coinCounterUI != null)
             {
                 coinCounterUI.IncrementKillCount();

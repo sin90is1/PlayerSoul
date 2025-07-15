@@ -1111,8 +1111,8 @@ MonoBehaviour:
   developerAddressText: {fileID: 1538098388}
   developerBalanceText: {fileID: 894606219}
   chainId: 11155111
-  contractAddress: YOUR_CONTRACT_ADDRESS
-  contractABI: {fileID: 0}
+  contractAddress: 0xFC059973c2C2f66460811b888A9b27a06aE2EC9D
+  contractABI: {fileID: 4900000, guid: ad4f8909413fe484f89d9e737ec34c2f, type: 3}
 --- !u!114 &776758363
 MonoBehaviour:
   m_ObjectHideFlags: 0

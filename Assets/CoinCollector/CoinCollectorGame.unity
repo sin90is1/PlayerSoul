@@ -1111,7 +1111,7 @@ MonoBehaviour:
   developerAddressText: {fileID: 1538098388}
   developerBalanceText: {fileID: 894606219}
   chainId: 11155111
-  contractAddress: 0xFC059973c2C2f66460811b888A9b27a06aE2EC9D
+  contractAddress: 0x4496bB64eD872BA070a79cC2340609DE7aCd5EbB
   contractABI: {fileID: 4900000, guid: ad4f8909413fe484f89d9e737ec34c2f, type: 3}
 --- !u!114 &776758363
 MonoBehaviour:
@@ -1125,10 +1125,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45cfb2edefd9d3d449449ba1017e77ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  achievementManager: {fileID: 776758364}
-  loadAchievementsButton: {fileID: 1519891072}
   achievementPrefab: {fileID: 9052076801386601467, guid: e24fe9ef677ee6c46b9226696f3f8706, type: 3}
-  container: {fileID: 694441228}
+  achievementContainer: {fileID: 1483260190}
+  contractAddress: 0x4496bB64eD872BA070a79cC2340609DE7aCd5EbB
+  chainId: 11155111
+  contractABI: {fileID: 4900000, guid: ad4f8909413fe484f89d9e737ec34c2f, type: 3}
+  playerAddress: 0xc8EBDb8B32DC8629706816A6F3A2fc0e8618a286
 --- !u!114 &776758364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,8 +1144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soulMinter: {fileID: 776758362}
-  playerAddress: 
-  achievementURI: 
+  playerAddress: 0xc8EBDb8B32DC8629706816A6F3A2fc0e8618a286
+  achievementURI: ipfs://bafkreiceg24bz24qspe4mjqyenvrnmhtxocwl6yahnmvi5jk342p44s2ii
 --- !u!1 &820707403
 GameObject:
   m_ObjectHideFlags: 0
@@ -2223,6 +2225,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1483260190}
   - {fileID: 185655560}
   - {fileID: 984428640}
   - {fileID: 694441228}
@@ -2235,6 +2238,68 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1483260189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1483260190}
+  - component: {fileID: 1483260191}
+  m_Layer: 5
+  m_Name: AchievemntScreen (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1483260190
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483260189}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1341341382}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1016.71, y: 163.29}
+  m_SizeDelta: {x: 526.57, y: 1113.42}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1483260191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483260189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 30
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 30
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
+  m_ReverseArrangement: 0
 --- !u!1 &1519891070
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,9 +2383,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 776758361}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: ToggleAchievementsScreen
+      - m_Target: {fileID: 776758363}
+        m_TargetAssemblyTypeName: AchievementDisplayManager, Assembly-CSharp
+        m_MethodName: OnLoadAchievementsClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

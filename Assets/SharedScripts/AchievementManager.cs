@@ -14,41 +14,8 @@ public class AchievementManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(FetchPlayerAchievementsCoroutine());
     }
 
-         public IEnumerator FetchPlayerAchievementsCoroutine()
-         {
-             yield return new WaitUntil(() => soulMinter != null && soulMinter.IsReady());
-     
-             var achievementsTask = soulMinter.GetAchievementsForPlayer(playerAddress);
-             yield return new WaitUntil(() => achievementsTask.IsCompleted);
-    
-             if (achievementsTask.Result != null)
-             {
-                 foreach (var achievement in achievementsTask.Result)
-                 {
-                     Debug.Log($"Issuer: {achievement.issuer}, URI: {achievement.uri}");
-                 }
-             }
-         }
-
-    public IEnumerator FetchPlayerAchievementsCoroutineWithCallback(Action<List<(string issuer, string uri)>> callback)
-    {
-        yield return new WaitUntil(() => soulMinter != null && soulMinter.IsReady());
-
-        var achievementsTask = soulMinter.GetAchievementsForPlayer(playerAddress);
-        yield return new WaitUntil(() => achievementsTask.IsCompleted);
-
-        if (achievementsTask.Result != null)
-        {
-            callback?.Invoke(achievementsTask.Result);
-        }
-        else
-        {
-            callback?.Invoke(new List<(string, string)>());
-        }
-    }
 
     public void TryMintAchievement(int count)
     {

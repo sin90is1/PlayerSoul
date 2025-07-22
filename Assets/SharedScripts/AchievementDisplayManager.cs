@@ -1,20 +1,25 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Thirdweb;
+using Thirdweb.Unity;
 using UnityEngine.Networking;
 
 public class AchievementDisplayManager : MonoBehaviour
 {
-    [Header("Dependencies")]
-    public AchievementManager achievementManager; // Drag in Inspector
-    public Button loadAchievementsButton;
+    [Header("UI Prefab Setup")]
+    public GameObject achievementPrefab; // Prefab with RawImage + TMP_Text
+    public Transform achievementContainer;
 
-    [Header("UI")]
-    public GameObject achievementPrefab; // Must have RawImage + TMP_Text children
-    public Transform container;
+    [Header("Blockchain Info")]
+    public string contractAddress = "YOUR_CONTRACT_ADDRESS";
+    public ulong chainId = 11155111; // Sepolia
+    public TextAsset contractABI;
+    public string playerAddress = "PLAYER_WALLET_ADDRESS"; // Set manually
+
+    private ThirdwebContract contract;
 
     [System.Serializable]
     public class AchievementData
@@ -24,29 +29,56 @@ public class AchievementDisplayManager : MonoBehaviour
         public string image;
     }
 
-    void Start()
+    public void OnLoadAchievementsClicked()
     {
-        loadAchievementsButton.onClick.AddListener(() => StartCoroutine(DisplayPlayerAchievements()));
+
+        StartCoroutine(LoadAndDisplayAchievements());
+        
     }
 
-    private IEnumerator DisplayPlayerAchievements()
+    private IEnumerator LoadAndDisplayAchievements()
     {
-        List<(string issuer, string uri)> achievements = null;
+        yield return LoadContract();
 
-        yield return StartCoroutine(achievementManager.FetchPlayerAchievementsCoroutineWithCallback((result) =>
-        {
-            achievements = result;
-        }));
+        var resultTask = ThirdwebContract.Read<List<string>>(
+            contract,
+            "getPlayerAchievementsTokenURI",
+            new object[] { playerAddress }
+        );
 
-        if (achievements == null || achievements.Count == 0)
+        yield return new WaitUntil(() => resultTask.IsCompleted);
+
+        var result = resultTask.Result;
+
+        foreach (Transform child in achievementContainer)
         {
-            Debug.Log("No achievements found.");
-            yield break;
+            Destroy(child.gameObject);
         }
 
-        foreach (var (_, uri) in achievements)
+        foreach (string uri in result)
         {
-            yield return StartCoroutine(InstantiateAchievementFromIPFS(uri));
+            if (!string.IsNullOrEmpty(uri))
+            {
+                Debug.Log($"Parsed URI: {uri}");
+                yield return StartCoroutine(InstantiateAchievementFromIPFS(uri));
+            }
+        }
+    }
+
+
+
+    private IEnumerator LoadContract()
+    {
+        if (contract == null)
+        {
+            var task = ThirdwebContract.Create(
+                ThirdwebManager.Instance.Client,
+                contractAddress,
+                chainId,
+                contractABI.text
+            );
+            yield return new WaitUntil(() => task.IsCompleted);
+            contract = task.Result;
         }
     }
 
@@ -58,29 +90,30 @@ public class AchievementDisplayManager : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Metadata load failed: " + request.error);
+            Debug.LogError("Failed to load metadata from IPFS: " + request.error);
             yield break;
         }
 
-        AchievementData data = JsonUtility.FromJson<AchievementData>(request.downloadHandler.text);
-        GameObject item = Instantiate(achievementPrefab, container);
+        string json = request.downloadHandler.text;
+        AchievementData data = JsonUtility.FromJson<AchievementData>(json);
 
-        var text = item.GetComponentInChildren<TMP_Text>();
-        var image = item.GetComponentInChildren<RawImage>();
+        GameObject instance = Instantiate(achievementPrefab, achievementContainer);
+        RawImage image = instance.GetComponentInChildren<RawImage>();
+        TMP_Text text = instance.GetComponentInChildren<TMP_Text>();
 
-        if (text != null) text.text = data.name;
+        text.text = data.name;
 
         string imageUrl = data.image.Replace("ipfs://", "https://ipfs.io/ipfs/");
-        UnityWebRequest imgRequest = UnityWebRequestTexture.GetTexture(imageUrl);
-        yield return imgRequest.SendWebRequest();
+        UnityWebRequest textureRequest = UnityWebRequestTexture.GetTexture(imageUrl);
+        yield return textureRequest.SendWebRequest();
 
-        if (imgRequest.result == UnityWebRequest.Result.Success)
+        if (textureRequest.result == UnityWebRequest.Result.Success)
         {
-            image.texture = ((DownloadHandlerTexture)imgRequest.downloadHandler).texture;
+            image.texture = ((DownloadHandlerTexture)textureRequest.downloadHandler).texture;
         }
         else
         {
-            Debug.LogError("Image load failed: " + imgRequest.error);
+            Debug.LogError("Failed to load image: " + textureRequest.error);
         }
     }
 }

@@ -99,40 +99,6 @@ public class PlayerSoulMinter : MonoBehaviour
         return result.TransactionHash;
     }
 
-    public async Task<List<(string issuer, string uri)>> GetAchievementsForPlayer(string playerAddress)
-    {
-        if (developerWallet == null || playerSoulContract == null)
-        {
-            Debug.LogError("Wallet or contract not connected.");
-            return null;
-        }
-
-        try
-        {
-            var result = await ThirdwebContract.Read<object[][]>(
-                playerSoulContract,
-                "getAchievementsForPlayer",
-                new object[] { playerAddress }
-            );
-
-            List<(string, string)> achievements = new List<(string, string)>();
-
-            foreach (object[] tuple in result)
-            {
-                string issuer = tuple[0]?.ToString();
-                string uri = tuple[1]?.ToString();
-                achievements.Add((issuer, uri));
-            }
-
-            return achievements;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Error fetching achievements: {e.Message}");
-            return null;
-        }
-    }
-
     ///////////////for debug
     private async System.Threading.Tasks.Task ShowDeveloperBalance()
     {

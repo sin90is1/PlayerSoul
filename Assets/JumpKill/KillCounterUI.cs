@@ -8,6 +8,7 @@ public class KillCounterUI : MonoBehaviour
     public Text killCountText; // Reference to the UI Text element
     private int killCount = 0;
 
+    public AchievementManager achievementManager;
     void Start()
     {
         // Initialize the kill count text
@@ -18,6 +19,10 @@ public class KillCounterUI : MonoBehaviour
     {
         killCount++;
         UpdateKillCountText();
+        if (achievementManager != null)
+        {
+            achievementManager.TryMintAchievement(killCount);
+        }
     }
 
     private void UpdateKillCountText()

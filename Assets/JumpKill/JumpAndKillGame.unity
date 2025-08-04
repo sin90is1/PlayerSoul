@@ -295,7 +295,7 @@ MonoBehaviour:
   contractAddress: 0x4496bB64eD872BA070a79cC2340609DE7aCd5EbB
   chainId: 11155111
   contractABI: {fileID: 4900000, guid: ad4f8909413fe484f89d9e737ec34c2f, type: 3}
-  playerAddress: 0xc8EBDb8B32DC8629706816A6F3A2fc0e8618a286
+  playerAddress: 0x0A41292A1938B925944538FFCf5fcA092c464319
 --- !u!114 &81106846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soulMinter: {fileID: 81106847}
-  playerAddress: 0xc8EBDb8B32DC8629706816A6F3A2fc0e8618a286
+  playerAddress: 0x0A41292A1938B925944538FFCf5fcA092c464319
   achievementURI: ipfs://bafkreihvks5kck3lzzxwymm57edkn3yu7bzr34izjculv33bojczvxzgpy
 --- !u!114 &81106847
 MonoBehaviour:
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 842c2a854ee6b4b40a64e28aca658570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killCounterUI: {fileID: 0}
+  killCounterUI: {fileID: 81106849}
 --- !u!1001 &724050309
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,8 +19,10 @@ public class AchievementManager : MonoBehaviour
 
     public void TryMintAchievement(int count)
     {
+        Debug.Log($"not Minted with Count: {count}");
         if (!hasMinted && count >= 3)
         {
+           Debug.Log($"Minted with Count: {count}");
             hasMinted = true;
            StartCoroutine(MintAchievementCoroutine());
 

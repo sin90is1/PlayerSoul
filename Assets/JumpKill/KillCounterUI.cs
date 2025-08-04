@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class KillCounterUI : MonoBehaviour
     public void IncrementKillCount()
     {
         killCount++;
+        //Debug.Log($"kill Count 2: {killCount}");
         UpdateKillCountText();
         if (achievementManager != null)
         {
@@ -30,6 +32,8 @@ public class KillCounterUI : MonoBehaviour
         if (killCountText != null)
         {
             killCountText.text = "Kills: " + killCount.ToString();
+            //Debug.Log($"kill Count: {killCount}");
+
         }
     }
 }
